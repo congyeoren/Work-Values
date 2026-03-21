@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What are your work values?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <script>
+    try {
+      const storageKey = "ce-theme";
+      const savedTheme = localStorage.getItem(storageKey);
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = savedTheme || (prefersDark ? "dark" : "light");
+    } catch (err) {
+      document.documentElement.dataset.theme = "light";
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: [
+              "Plus Jakarta Sans",
+              "Inter",
+              "system-ui",
+              "-apple-system",
+              "BlinkMacSystemFont",
+              "Segoe UI",
+              "sans-serif"
+            ]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --font-sans: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg-page: #f6f7fb;
+      --bg-page-alt: #eef2ff;
+      --surface: rgba(255, 255, 255, 0.92);
+      --surface-elevated: rgba(255, 255, 255, 0.98);
+      --surface-muted: rgba(15, 23, 42, 0.06);
+      --surface-hover: rgba(15, 23, 42, 0.05);
+      --border-soft: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.16);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #64748b;
+      --muted: #64748b;
+      --accent-600: #1d4ed8;
+      --accent-500: #2563eb;
+      --accent-400: #3b82f6;
+      --accent-300: #60a5fa;
+      --accent-soft: rgba(37, 99, 235, 0.12);
+      --accent-ring: rgba(37, 99, 235, 0.35);
+      --success-600: #047857;
+      --success-soft: rgba(16, 185, 129, 0.12);
+      --success-border: rgba(5, 150, 105, 0.28);
+      --neutral-soft: rgba(148, 163, 184, 0.16);
+      --neutral-border: rgba(148, 163, 184, 0.25);
+      --shadow-sm: 0 12px 36px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 30px 70px rgba(15, 23, 42, 0.12);
+      --text-on-accent: #ffffff;
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg-page: #0b1220;
+      --bg-page-alt: #141e34;
+      --surface: rgba(15, 23, 42, 0.78);
+      --surface-elevated: rgba(15, 23, 42, 0.92);
+      --surface-muted: rgba(148, 163, 184, 0.12);
+      --surface-hover: rgba(148, 163, 184, 0.18);
+      --border-soft: rgba(148, 163, 184, 0.18);
+      --border-strong: rgba(148, 163, 184, 0.4);
+      --text-primary: #e2e8f0;
+      --text-secondary: #cbd5f5;
+      --text-tertiary: #94a3b8;
+      --muted: #94a3b8;
+      --accent-600: #60a5fa;
+      --accent-500: #38bdf8;
+      --accent-400: #0ea5e9;
+      --accent-300: rgba(56, 189, 248, 0.6);
+      --accent-soft: rgba(56, 189, 248, 0.18);
+      --accent-ring: rgba(56, 189, 248, 0.45);
+      --success-600: #34d399;
+      --success-soft: rgba(52, 211, 153, 0.22);
+      --success-border: rgba(52, 211, 153, 0.45);
+      --neutral-soft: rgba(148, 163, 184, 0.18);
+      --neutral-border: rgba(148, 163, 184, 0.3);
+      --shadow-sm: 0 20px 48px rgba(8, 15, 35, 0.6);
+      --shadow-md: 0 40px 90px rgba(8, 15, 35, 0.55);
+      --text-on-accent: #0b1220;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      background: radial-gradient(130% 130% at 0% 0%, var(--bg-page-alt) 0%, var(--bg-page) 55%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.4s ease, color 0.3s ease;
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-width {
+      width: min(1100px, 100%);
+      margin-inline: auto;
+    }
+
+    header {
+      padding-top: 2.75rem;
+      padding-bottom: 1.25rem;
+    }
+
+    .brand-block {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .page-title {
+      font-size: clamp(1.9rem, 4vw, 2.9rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      font-weight: 600;
+      color: var(--accent-600);
+    }
+
+    .text-muted {
+      color: var(--text-secondary);
+    }
+
+    .status-card {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border-soft);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      backdrop-filter: blur(12px);
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 0.65rem;
+      background: var(--surface-muted);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-500), var(--accent-400));
+      transition: width 0.35s ease;
+    }
+
+    .progress-text {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 960px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .current-card {
+      background: var(--surface);
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .current-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .current-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 0.25rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent-600);
+      width: fit-content;
+    }
+
+    .choice-group {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: 1fr;
+    }
+
+    .choice-group > .btn {
+      width: 100%;
+      min-width: 0;
+      white-space: normal;
+      word-break: keep-all;
+      text-align: center;
+    }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.4rem;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+      min-height: 44px;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+    }
+
+    .btn-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      color: var(--text-primary);
+      padding: 0;
+    }
+
+    .btn-icon:hover {
+      background: var(--surface-hover);
+    }
+
+    .btn-link {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: var(--accent-600);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+
+    .choice-btn-low {
+      background: var(--neutral-soft);
+      border-color: var(--neutral-border);
+      color: var(--text-primary);
+    }
+
+    .choice-btn-low:hover {
+      background: rgba(148, 163, 184, 0.22);
+    }
+
+    .choice-btn-mid {
+      background: var(--accent-soft);
+      border-color: var(--accent-300);
+      color: var(--accent-600);
+    }
+
+    .choice-btn-mid:hover {
+      background: rgba(37, 99, 235, 0.18);
+    }
+
+    .choice-btn-high {
+      background: var(--success-soft);
+      border-color: var(--success-border);
+      color: var(--success-600);
+    }
+
+    .choice-btn-high:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .list-column {
+      background: var(--surface);
+      border-radius: 22px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .column-header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-soft);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .count-badge {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-tertiary);
+    }
+
+    .list-scroll {
+      list-style: none;
+      margin: 0;
+      padding: 1.25rem;
+      display: grid;
+      gap: 0.75rem;
+      overflow-y: auto;
+      max-height: 420px;
+    }
+
+    .list-card {
+      background: var(--surface-elevated);
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+    }
+
+    .column-low .list-card {
+      border-color: var(--neutral-border);
+    }
+
+    .column-mid .list-card {
+      border-color: var(--accent-300);
+      background: var(--accent-soft);
+    }
+
+    .column-high .list-card {
+      border-color: var(--success-border);
+      background: var(--success-soft);
+    }
+
+    .list-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .item-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    .item-description {
+      margin-top: 0.55rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .item {
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .item.removing {
+      transform: translateX(-12%);
+      opacity: 0;
+    }
+
+    .item.adding {
+      transform: translateY(-12px);
+      opacity: 0;
+    }
+
+    .item.added {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .complete-card {
+      text-align: center;
+      gap: 1.25rem;
+    }
+
+    .complete-card p {
+      font-size: 0.95rem;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--accent-ring);
+      outline-offset: 3px;
+      border-radius: 16px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--surface-muted);
+      border-radius: 999px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding-top: 2.25rem;
+      }
+
+      .list-scroll {
+        max-height: 300px;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans">
+  <div class="page-shell">
+    <header class="content-width px-4">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div class="brand-block">
+            <div>
+              <p class="eyebrow">Career Exploration</p>
+              <h1 class="page-title">What are your work values?</h1>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 self-start md:self-center">
+            <button id="themeToggle" class="btn btn-icon" type="button" aria-label="Toggle theme"></button>
+          </div>
+        </div>
+        <div class="max-w-3xl">
+          <p class="text-muted text-base md:text-lg">
+            Career decisions start with knowing your values. Sort through 45 work values, rank what matters most to you, and walk away with a clearer, more personal sense of the career path.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-width px-4 pb-12 md:pb-16">
+      <section id="workValuesContainer" class="mt-6 md:mt-10"></section>
+    </main>
+  </div>
+
+  <script>
+    /********************************
+     * DATA: 45 WORK VALUES
+     ********************************/
+    const WORK_VALUES = [
+      { label: "Keep solving problems", description: "Work involves tackling problems and finding solutions regularly." },
+      { label: "Help others", description: "Work gives you chances to support and benefit other people." },
+      { label: "Can get a raise", description: "Work offers opportunities for higher pay over time." },
+      { label: "Look forward to changes in your job", description: "Work changes enough to stay fresh and engaging." },
+      { label: "Have freedom in your area", description: "Work allows independence in how you do things." },
+      { label: "Gain prestige in your field", description: "Work earns respect and standing in your area." },
+      { label: "Need to have artistic ability", description: "Work depends on artistic sense or creative talent." },
+      { label: "Are one of the gang", description: "Work helps you feel included as part of the group." },
+      { label: "Know your job will last", description: "Work feels stable and likely to continue." },
+      { label: "Can be the kind of person you would like to be", description: "Work fits the kind of person you want to become." },
+      { label: "Have a boss who gives you a fair deal", description: "Work includes a fair and just supervisor." },
+      { label: "Like the setting in which your work is done", description: "Work happens in an environment you enjoy being in." },
+      { label: "Get the feeling of having done a good day’s work", description: "Work leaves you feeling satisfied at the end of the day." },
+      { label: "Have the authority over others", description: "Work gives you authority or influence over other people." },
+      { label: "Try out new ideas and suggestions", description: "Work gives room to test and explore ideas." },
+      { label: "Create something new", description: "Work involves making or inventing something original." },
+      { label: "Know by the results when you’ve done a good job", description: "Work gives clear feedback through visible results." },
+      { label: "Have a boss who is reasonable", description: "Work includes a supervisor who is understanding and sensible." },
+      { label: "Are sure of always having a job", description: "Work offers strong long-term job security." },
+      { label: "Add beauty to the world", description: "Work contributes beauty, style, or artistic value." },
+      { label: "Make your own decisions", description: "Work lets you decide things for yourself." },
+      { label: "Have pay increases that keep up with the cost of living", description: "Work keeps earnings growing with expenses." },
+      { label: "Are mentally challenged", description: "Work stretches your mind and keeps you thinking." },
+      { label: "Use leadership abilities", description: "Work gives you chances to lead others." },
+      { label: "Have adequate lounge, toilet and other facilities", description: "Work includes practical facilities that support comfort and well-being." },
+      { label: "Have a way of life, while not on the job, that you like", description: "Work supports a life outside work that suits you." },
+      { label: "Form friendships with your fellow employees", description: "Work helps you build friendships with colleagues." },
+      { label: "Know that others consider your work important", description: "Work is seen by others as meaningful and valuable." },
+      { label: "Do not do the same thing all the time", description: "Work avoids too much repetition." },
+      { label: "Feel you have helped another person", description: "Work lets you make a difference to someone directly." },
+      { label: "Add to the well-being of other people", description: "Work improves the lives of others in some way." },
+      { label: "Do many different things", description: "Work includes a range of different tasks." },
+      { label: "Are looked up to by others", description: "Work brings admiration or respect from others." },
+      { label: "Have good connections with fellow workers", description: "Work involves strong relationships with co-workers." },
+      { label: "Lead the kind of life you most enjoy", description: "Work supports the lifestyle you most want." },
+      { label: "Have a good place in which to work (quiet, calm, etc.)", description: "Work happens in a setting that feels comfortable and suitable." },
+      { label: "Plan and organize the work of others", description: "Work includes directing or organising what others do." },
+      { label: "Need to be mentally alert", description: "Work requires focus, sharp thinking, and alertness." },
+      { label: "Are paid enough to live very well", description: "Work provides enough income for a very comfortable life." },
+      { label: "Are your own boss", description: "Work allows you to be self-directed or independent." },
+      { label: "Make attractive products", description: "Work involves making things that are appealing or attractive." },
+      { label: "Are sure of another job in the company if your present job ends", description: "Work offers security through other opportunities in the same organisation." },
+      { label: "Have a supervisor who is considerate", description: "Work includes a supervisor who is thoughtful and caring." },
+      { label: "See the result of your efforts", description: "Work lets you clearly see what your effort has produced." },
+      { label: "Contribute new ideas", description: "Work gives opportunities to offer and apply new ideas." }
+    ];
+
+    /********************************
+     * STATE
+     ********************************/
+    let remainingValues = [];
+    let lowValues = [];
+    let midValues = [];
+    let highValues = [];
+
+    /********************************
+     * HELPERS
+     ********************************/
+    const qs = (sel) => document.querySelector(sel);
+
+    function percent(n, d) {
+      return d ? Math.round((n / d) * 100) : 0;
+    }
+
+    function slugify(text) {
+      return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function makeListItem(column, item, index) {
+      const safeId = `work-values-${column}-${slugify(item.label)}-${index}`;
+      const li = document.createElement("li");
+      li.id = safeId;
+      li.className = "item list-card adding";
+      li.dataset.itemIndex = String(index);
+      li.innerHTML = `
+        <div class="item-header">
+          <span class="item-title">${item.label}</span>
+          <button class="btn-link" type="button">Remove</button>
+        </div>
+        <p class="item-description">${item.description}</p>
+      `;
+      li.querySelector("button").addEventListener("click", () => revertItem(index, column));
+      return li;
+    }
+
+    function updateProgress() {
+      const total = WORK_VALUES.length;
+      const done = lowValues.length + midValues.length + highValues.length;
+      const pct = percent(done, total);
+
+      const bar = qs("#work-values-progress-bar");
+      const text = qs("#work-values-progress-text");
+      if (bar) bar.style.width = `${pct}%`;
+      if (text) text.textContent = `${pct}% complete`;
+
+      const setCount = (id, n) => {
+        const el = qs(id);
+        if (el) el.textContent = `(${n})`;
+      };
+      setCount("#work-values-low-count", lowValues.length);
+      setCount("#work-values-mid-count", midValues.length);
+      setCount("#work-values-high-count", highValues.length);
+    }
+
+    function updateCurrentCard() {
+      const currentWrap = qs("#work-values-current");
+      if (!currentWrap) return;
+
+      if (!remainingValues[0]) {
+        currentWrap.innerHTML = `
+          <article class="current-card complete-card">
+            <div>
+              <span class="chip">Complete</span>
+              <p>All 45 work values sorted. You can still revisit your choices below.</p>
+            </div>
+          </article>
+        `;
+        return;
+      }
+
+      const item = remainingValues[0];
+      currentWrap.innerHTML = `
+        <article class="current-card">
+          <div>
+            <span class="chip">Up next</span>
+            <h2 class="current-title">${item.label}</h2>
+            <p>${item.description}</p>
+          </div>
+          <div class="choice-group">
+            <button id="work-values-high-btn" class="btn choice-btn-high" type="button">Matters a lot</button>
+            <button id="work-values-mid-btn" class="btn choice-btn-mid" type="button">Somewhat matters</button>
+            <button id="work-values-low-btn" class="btn choice-btn-low" type="button">Does not matter much</button>
+          </div>
+        </article>
+      `;
+
+      qs("#work-values-high-btn").onclick = () => rateItem(item.index, "high");
+      qs("#work-values-mid-btn").onclick = () => rateItem(item.index, "mid");
+      qs("#work-values-low-btn").onclick = () => rateItem(item.index, "low");
+    }
+
+    function appendToList(column, item, index) {
+      const ul = qs(`#work-values-${column}`);
+      if (!ul) return;
+      const li = makeListItem(column, item, index);
+      ul.appendChild(li);
+      requestAnimationFrame(() => {
+        li.classList.remove("adding");
+        li.classList.add("added");
+      });
+    }
+
+    function removeFromList(column, index) {
+      const li = Array.from(document.querySelectorAll(`#work-values-${column} li`)).find(
+        (el) => el.dataset.itemIndex === String(index)
+      );
+      if (!li) return Promise.resolve();
+      li.classList.add("removing");
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          li.remove();
+          resolve();
+        }, 350);
+      });
+    }
+
+    function checkCompletionRequirement() {
+      const totalSorted = lowValues.length + midValues.length + highValues.length;
+      if (totalSorted === WORK_VALUES.length && highValues.length < 7) {
+        alert("Please rank 7 under Matters a lot");
+      }
+    }
+
+    /********************************
+     * INITIAL RENDER
+     ********************************/
+    function initialRender() {
+      const html = `
+        <div class="status-card" style="display:none">
+          <div class="progress-track">
+            <div id="work-values-progress-bar" class="progress-bar" style="width:0%"></div>
+          </div>
+          <p id="work-values-progress-text" class="progress-text">0% complete</p>
+        </div>
+
+        <div class="grid-layout">
+          <div>
+            <h2 class="text-lg font-semibold text-muted mb-3">Current Work Value</h2>
+            <div id="work-values-current"></div>
+          </div>
+
+          <div class="list-column column-high">
+            <div class="column-header">
+              <span>Matters a lot</span>
+              <span id="work-values-high-count" class="count-badge">(0)</span>
+            </div>
+            <ul id="work-values-high" class="list-scroll"></ul>
+          </div>
+
+          <div class="list-column column-mid">
+            <div class="column-header">
+              <span>Somewhat matters</span>
+              <span id="work-values-mid-count" class="count-badge">(0)</span>
+            </div>
+            <ul id="work-values-mid" class="list-scroll"></ul>
+          </div>
+
+          <div class="list-column column-low">
+            <div class="column-header">
+              <span>Does not matter much</span>
+              <span id="work-values-low-count" class="count-badge">(0)</span>
+            </div>
+            <ul id="work-values-low" class="list-scroll"></ul>
+          </div>
+
+          <div class="mt-4">
+            <button onclick="resetAll()" class="btn btn-secondary w-full" type="button">Reset Work Values</button>
+          </div>
+        </div>
+      `;
+
+      qs("#workValuesContainer").innerHTML = html;
+      updateCurrentCard();
+      updateProgress();
+    }
+
+    /********************************
+     * INTERACTIONS
+     ********************************/
+    function rateItem(index, bucket) {
+      const current = remainingValues[0];
+      if (!current || current.index !== index) return;
+
+      const target = bucket === "high" ? highValues : bucket === "mid" ? midValues : lowValues;
+      target.push(current);
+      remainingValues.shift();
+
+      appendToList(bucket, current, current.index);
+      updateCurrentCard();
+      updateProgress();
+      checkCompletionRequirement();
+    }
+
+    function revertItem(index, fromBucket) {
+      const source = fromBucket === "high" ? highValues : fromBucket === "mid" ? midValues : lowValues;
+
+      removeFromList(fromBucket, index).then(() => {
+        const idx = source.findIndex((item) => item.index === index);
+        if (idx > -1) {
+          const [restored] = source.splice(idx, 1);
+          remainingValues.push(restored);
+        }
+        updateCurrentCard();
+        updateProgress();
+      });
+    }
+
+    function resetAll() {
+      remainingValues = WORK_VALUES.map((item, index) => ({ ...item, index }));
+      lowValues = [];
+      midValues = [];
+      highValues = [];
+      qs("#work-values-low").innerHTML = "";
+      qs("#work-values-mid").innerHTML = "";
+      qs("#work-values-high").innerHTML = "";
+      updateCurrentCard();
+      updateProgress();
+    }
+
+    function setupThemeToggle() {
+      const toggleBtn = qs("#themeToggle");
+      if (!toggleBtn) return;
+      const storageKey = "ce-theme";
+      const root = document.documentElement;
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+      function setButtonIcon(theme) {
+        toggleBtn.innerHTML = theme === "dark"
+          ? `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 12 17a7 7 0 0 0 9-4.21Z" /></svg>`
+          : `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5" /><path d="M12 1v2m0 18v2m11-11h-2M3 12H1m19.07 7.07-1.41-1.41M6.34 6.34 4.93 4.93m12.02 0 1.41 1.41M6.34 17.66l-1.41 1.41" /></svg>`;
+        toggleBtn.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+      }
+
+      function applyTheme(theme, persist = false) {
+        root.dataset.theme = theme;
+        setButtonIcon(theme);
+        if (persist) {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch (err) {
+            /* ignore */
+          }
+        }
+      }
+
+      const storedTheme = (() => {
+        try {
+          return localStorage.getItem(storageKey);
+        } catch (err) {
+          return null;
+        }
+      })();
+
+      const initialTheme = root.dataset.theme || storedTheme || (mediaQuery.matches ? "dark" : "light");
+      applyTheme(initialTheme);
+
+      toggleBtn.addEventListener("click", () => {
+        const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+        applyTheme(nextTheme, true);
+      });
+
+      mediaQuery.addEventListener("change", (event) => {
+        const hasStored = (() => {
+          try {
+            return localStorage.getItem(storageKey) !== null;
+          } catch (err) {
+            return false;
+          }
+        })();
+        if (hasStored) return;
+        applyTheme(event.matches ? "dark" : "light");
+      });
+    }
+
+    /********************************
+     * BOOT
+     ********************************/
+    function boot() {
+      remainingValues = WORK_VALUES.map((item, index) => ({ ...item, index }));
+      initialRender();
+      setupThemeToggle();
+    }
+
+    boot();
+  </script>
+</body>
+</html>
