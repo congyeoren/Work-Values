@@ -668,7 +668,7 @@ Then, recommend 1–2 additional skills, traits, or experiences I could develop 
           copyBtn.style.opacity = "0.55";
           copyBtn.style.cursor = "not-allowed";
         } else {
-          message.textContent = "Prompt is ready for copy.";
+          message.textContent = "Your shortlist is ready to copy.";
           message.className = "modal-message";
           copyBtn.disabled = false;
           copyBtn.style.opacity = "";
@@ -733,10 +733,12 @@ Then, recommend 1–2 additional skills, traits, or experiences I could develop 
       const total = WORK_VALUES.length;
       const done = countSorted();
       const pct = percent(done, total);
-      const bar = qs("#work-values-progress-bar");
-      const text = qs("#work-values-progress-text");
-      const fraction = qs("#work-values-progress-fraction");
-      if (bar) bar.style.width = `${pct}%`;
+      const section = qs("#work-values-progress-section");
+const bar = qs("#work-values-progress-bar");
+const text = qs("#work-values-progress-text");
+const fraction = qs("#work-values-progress-fraction");
+if (section) section.style.display = done > 0 ? "" : "none";
+if (bar) bar.style.width = `${pct}%`;
       if (fraction) fraction.textContent = `${done}/${total}`;
       if (text) text.textContent = done === total ? "All values sorted" : `${total - done} left to sort`;
       const setCount = (id, n) => { const el = qs(id); if (el) el.textContent = `(${n})`; };
@@ -796,7 +798,7 @@ Then, recommend 1–2 additional skills, traits, or experiences I could develop 
 
     function initialRender() {
       const html = `
-        <div class="status-card">
+        <div id="work-values-progress-section" class="status-card" style="display:none">
           <div class="progress-row">
             <span class="progress-label">Progress</span>
             <span id="work-values-progress-fraction" class="progress-fraction">0/45</span>
